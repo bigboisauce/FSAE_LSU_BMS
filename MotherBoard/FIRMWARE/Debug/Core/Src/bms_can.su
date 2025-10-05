@@ -1,0 +1,2 @@
+../Core/Src/bms_can.c:17:19:BMS_CAN_SendStatus	56	static
+../Core/Src/bms_can.c:52:19:BMS_CAN_SendFault	56	static

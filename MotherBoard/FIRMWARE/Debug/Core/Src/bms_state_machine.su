@@ -1,0 +1,4 @@
+../Core/Src/bms_state_machine.c:29:6:BMS_Init	16	static
+../Core/Src/bms_state_machine.c:45:6:BMS_Update	24	static
+../Core/Src/bms_state_machine.c:189:13:BMS_GotoState	16	static
+../Core/Src/bms_state_machine.c:202:13:BMS_HandleFault	16	static

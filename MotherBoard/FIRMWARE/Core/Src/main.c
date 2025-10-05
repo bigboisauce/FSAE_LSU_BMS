@@ -8,7 +8,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-
+#include "bms_state_machine.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include <stdbool.h>
@@ -54,7 +54,7 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_CAN1_Init(void);
 static void MX_CAN2_Init(void);
-static void MX_SDIO_SD_Init(void);
+__attribute__((unused)) static void MX_SDIO_SD_Init(void);
 static void MX_SPI1_Init(void);
 static void MX_USART2_UART_Init(void);
 static void MX_UART4_Init(void);
@@ -152,49 +152,53 @@ int main(void)
 	*/
 
   /* USER CODE END 2 */
-
-  /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+
+  /* USER CODE BEGIN 3 */
+
+  // ---------------------------------------------------------------------------
+  // Initialize the Battery Management System (BMS) state machine.
+  // This structure keeps track of the BMS operating state (e.g., WAKE, MEASURE, FAULT),
+  // transition timing, and any retries or internal flags.
+  // ---------------------------------------------------------------------------
+  bms_ctx_t bms;
+  BMS_Init(&bms);
+
+  // ---------------------------------------------------------------------------
+  // Main application loop
+  //
+  // The state machine handles:
+  //   - Waking and initializing all stacked BQ79600 devices
+  //   - Performing auto-addressing across the stack
+  //   - Periodically reading cell voltages and computing pack statistics
+  //   - Handling balancing, communication, and fault conditions
+  //   - Transitioning between states automatically based on success/failure
+  //
+  // The loop below continuously calls BMS_Update(), which runs one iteration
+  // of the state machine. Each call checks current conditions, executes actions
+  // for the active state, and determines whether a state transition is needed.
+  //
+  // HAL_Delay(50) provides a 50ms update rate for the state machine.
+  // This timing can be adjusted based on how quickly voltage reads
+  // and balancing operations are expected to occur.
+  // ---------------------------------------------------------------------------
+
   while (1)
   {
+      // Execute one cycle of the BMS state machine
+      BMS_Update(&bms);
 
-	//HAL_ADC_Start(&hadc1);
-	//status = HAL_ADC_PollForConversion(&hadc1, 100);
-	if (status == HAL_OK)
-	{
-	    // Read the ADC value
-		//uint16_t adc_value = HAL_ADC_GetValue(&hadc1);
+      // Optional: You can add diagnostics or telemetry printing here
+      // Example:
+      // printf("Current BMS State: %d\r\n", bms.state);
 
-	    // Process the ADC value as needed
-	    // For example, you might want to convert to voltage:
-	    //float voltage5 = (adc_value * 3.3f) / 4095.0f;  // Assuming 3.3V reference and 12-bit resolution
-
-		/*
-	    printf("ADC READ %f \r\n", voltage5);
-	    if(status == HAL_OK){
-	    	printf("ADC READ GOOD\r\n");
-	    	}
-	    else
-	    	printf("ADC ERROR %d\r\n", status);
-	    	*/
-	}
-
-
-	status = stackVoltageRead(ACTIVECHANNELS);
-	/*
-	if(status == HAL_OK){
-		printf("VOLTAGE READ GOOD\r\n");
-	   }
-	else
-		printf("VOLTAGE READ ERROR %d\r\n", status);
-	*/
-	HAL_Delay(1000);
-
-    /* USER CODE BEGIN 3 */
-
+      // Small delay between state machine updates
+      HAL_Delay(50);
   }
+
   /* USER CODE END 3 */
 }
+
 
 
 

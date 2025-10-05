@@ -1,6 +1,6 @@
 ################################################################################
 # Automatically-generated file. Do not edit!
-# Toolchain: GNU Tools for STM32 (12.3.rel1)
+# Toolchain: GNU Tools for STM32 (13.3.rel1)
 ################################################################################
 
 -include ../makefile.init
@@ -34,34 +34,34 @@ $(wildcard ../makefile.init) \
 $(wildcard ../makefile.targets) \
 
 
-BUILD_ARTIFACT_NAME := Source
+BUILD_ARTIFACT_NAME := PINOUT
 BUILD_ARTIFACT_EXTENSION := elf
 BUILD_ARTIFACT_PREFIX :=
 BUILD_ARTIFACT := $(BUILD_ARTIFACT_PREFIX)$(BUILD_ARTIFACT_NAME)$(if $(BUILD_ARTIFACT_EXTENSION),.$(BUILD_ARTIFACT_EXTENSION),)
 
 # Add inputs and outputs from these tool invocations to the build variables 
 EXECUTABLES += \
-Source.elf \
+PINOUT.elf \
 
 MAP_FILES += \
-Source.map \
+PINOUT.map \
 
 SIZE_OUTPUT += \
 default.size.stdout \
 
 OBJDUMP_LIST += \
-Source.list \
+PINOUT.list \
 
 
 # All Target
 all: main-build
 
 # Main-build Target
-main-build: Source.elf secondary-outputs
+main-build: PINOUT.elf secondary-outputs
 
 # Tool invocations
-Source.elf Source.map: $(OBJS) $(USER_OBJS) C:\Users\paren\FSAE_LSU_BMS\MotherBoard\FIRMWARE\STM32F205RBTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "Source.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"C:\Users\paren\FSAE_LSU_BMS\MotherBoard\FIRMWARE\STM32F205RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Source.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -u _printf_float -Wl,--start-group -lc -lm -Wl,--end-group
+PINOUT.elf PINOUT.map: $(OBJS) $(USER_OBJS) C:\Users\David\Documents\GitHub\FSAE_LSU_BMS\MotherBoard\FIRMWARE\STM32F205RBTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "PINOUT.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"C:\Users\David\Documents\GitHub\FSAE_LSU_BMS\MotherBoard\FIRMWARE\STM32F205RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="PINOUT.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -u _printf_float -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
@@ -70,14 +70,14 @@ default.size.stdout: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
 	@echo 'Finished building: $@'
 	@echo ' '
 
-Source.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "Source.list"
+PINOUT.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "PINOUT.list"
 	@echo 'Finished building: $@'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) Source.elf Source.list Source.map default.size.stdout
+	-$(RM) PINOUT.elf PINOUT.list PINOUT.map default.size.stdout
 	-@echo ' '
 
 secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST)
