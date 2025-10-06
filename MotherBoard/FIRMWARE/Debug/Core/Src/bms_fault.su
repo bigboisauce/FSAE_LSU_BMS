@@ -1,0 +1,3 @@
+../Core/Src/bms_fault.c:18:6:BMS_CheckForFaults	32	static
+../Core/Src/bms_fault.c:55:6:BMS_RecordCommSuccess	8	static
+../Core/Src/bms_fault.c:61:6:BMS_TriggerFault	16	static

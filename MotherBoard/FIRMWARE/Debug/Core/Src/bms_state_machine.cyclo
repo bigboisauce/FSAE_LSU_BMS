@@ -1,4 +1,4 @@
-../Core/Src/bms_state_machine.c:29:6:BMS_Init	1
-../Core/Src/bms_state_machine.c:45:6:BMS_Update	12
-../Core/Src/bms_state_machine.c:189:13:BMS_GotoState	1
-../Core/Src/bms_state_machine.c:202:13:BMS_HandleFault	1
+../Core/Src/bms_state_machine.c:31:6:BMS_Init	1
+../Core/Src/bms_state_machine.c:47:6:BMS_Update	14
+../Core/Src/bms_state_machine.c:204:13:BMS_GotoState	1
+../Core/Src/bms_state_machine.c:217:13:BMS_HandleFault	1

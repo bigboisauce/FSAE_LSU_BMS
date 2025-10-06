@@ -7,6 +7,7 @@
 C_SRCS += \
 ../Core/Src/SOC.c \
 ../Core/Src/bms_can.c \
+../Core/Src/bms_fault.c \
 ../Core/Src/bms_platform.c \
 ../Core/Src/bms_state_machine.c \
 ../Core/Src/bq79600.c \
@@ -20,6 +21,7 @@ C_SRCS += \
 OBJS += \
 ./Core/Src/SOC.o \
 ./Core/Src/bms_can.o \
+./Core/Src/bms_fault.o \
 ./Core/Src/bms_platform.o \
 ./Core/Src/bms_state_machine.o \
 ./Core/Src/bq79600.o \
@@ -33,6 +35,7 @@ OBJS += \
 C_DEPS += \
 ./Core/Src/SOC.d \
 ./Core/Src/bms_can.d \
+./Core/Src/bms_fault.d \
 ./Core/Src/bms_platform.d \
 ./Core/Src/bms_state_machine.d \
 ./Core/Src/bq79600.d \
@@ -51,7 +54,7 @@ Core/Src/%.o Core/Src/%.su Core/Src/%.cyclo: ../Core/Src/%.c Core/Src/subdir.mk
 clean: clean-Core-2f-Src
 
 clean-Core-2f-Src:
-	-$(RM) ./Core/Src/SOC.cyclo ./Core/Src/SOC.d ./Core/Src/SOC.o ./Core/Src/SOC.su ./Core/Src/bms_can.cyclo ./Core/Src/bms_can.d ./Core/Src/bms_can.o ./Core/Src/bms_can.su ./Core/Src/bms_platform.cyclo ./Core/Src/bms_platform.d ./Core/Src/bms_platform.o ./Core/Src/bms_platform.su ./Core/Src/bms_state_machine.cyclo ./Core/Src/bms_state_machine.d ./Core/Src/bms_state_machine.o ./Core/Src/bms_state_machine.su ./Core/Src/bq79600.cyclo ./Core/Src/bq79600.d ./Core/Src/bq79600.o ./Core/Src/bq79600.su ./Core/Src/main.cyclo ./Core/Src/main.d ./Core/Src/main.o ./Core/Src/main.su ./Core/Src/stm32f2xx_hal_msp.cyclo ./Core/Src/stm32f2xx_hal_msp.d ./Core/Src/stm32f2xx_hal_msp.o ./Core/Src/stm32f2xx_hal_msp.su ./Core/Src/stm32f2xx_it.cyclo ./Core/Src/stm32f2xx_it.d ./Core/Src/stm32f2xx_it.o ./Core/Src/stm32f2xx_it.su ./Core/Src/syscalls.cyclo ./Core/Src/syscalls.d ./Core/Src/syscalls.o ./Core/Src/syscalls.su ./Core/Src/sysmem.cyclo ./Core/Src/sysmem.d ./Core/Src/sysmem.o ./Core/Src/sysmem.su ./Core/Src/system_stm32f2xx.cyclo ./Core/Src/system_stm32f2xx.d ./Core/Src/system_stm32f2xx.o ./Core/Src/system_stm32f2xx.su
+	-$(RM) ./Core/Src/SOC.cyclo ./Core/Src/SOC.d ./Core/Src/SOC.o ./Core/Src/SOC.su ./Core/Src/bms_can.cyclo ./Core/Src/bms_can.d ./Core/Src/bms_can.o ./Core/Src/bms_can.su ./Core/Src/bms_fault.cyclo ./Core/Src/bms_fault.d ./Core/Src/bms_fault.o ./Core/Src/bms_fault.su ./Core/Src/bms_platform.cyclo ./Core/Src/bms_platform.d ./Core/Src/bms_platform.o ./Core/Src/bms_platform.su ./Core/Src/bms_state_machine.cyclo ./Core/Src/bms_state_machine.d ./Core/Src/bms_state_machine.o ./Core/Src/bms_state_machine.su ./Core/Src/bq79600.cyclo ./Core/Src/bq79600.d ./Core/Src/bq79600.o ./Core/Src/bq79600.su ./Core/Src/main.cyclo ./Core/Src/main.d ./Core/Src/main.o ./Core/Src/main.su ./Core/Src/stm32f2xx_hal_msp.cyclo ./Core/Src/stm32f2xx_hal_msp.d ./Core/Src/stm32f2xx_hal_msp.o ./Core/Src/stm32f2xx_hal_msp.su ./Core/Src/stm32f2xx_it.cyclo ./Core/Src/stm32f2xx_it.d ./Core/Src/stm32f2xx_it.o ./Core/Src/stm32f2xx_it.su ./Core/Src/syscalls.cyclo ./Core/Src/syscalls.d ./Core/Src/syscalls.o ./Core/Src/syscalls.su ./Core/Src/sysmem.cyclo ./Core/Src/sysmem.d ./Core/Src/sysmem.o ./Core/Src/sysmem.su ./Core/Src/system_stm32f2xx.cyclo ./Core/Src/system_stm32f2xx.d ./Core/Src/system_stm32f2xx.o ./Core/Src/system_stm32f2xx.su
 
 .PHONY: clean-Core-2f-Src
 

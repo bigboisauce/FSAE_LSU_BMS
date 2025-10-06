@@ -552,7 +552,6 @@ HAL_StatusTypeDef stackVoltageRead(int returnLen){
 	printf("Average Stack SOC: %d%%\r\n", stackSOC);
 
 	return HAL_OK;
-
 }
 
 uint32_t convert_adc_to_voltage(uint8_t high_byte, uint8_t low_byte)

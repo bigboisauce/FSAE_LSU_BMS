@@ -1,5 +1,6 @@
 "./Core/Src/SOC.o"
 "./Core/Src/bms_can.o"
+"./Core/Src/bms_fault.o"
 "./Core/Src/bms_platform.o"
 "./Core/Src/bms_state_machine.o"
 "./Core/Src/bq79600.o"

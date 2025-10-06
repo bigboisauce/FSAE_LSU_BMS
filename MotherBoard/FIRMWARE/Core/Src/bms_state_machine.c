@@ -9,6 +9,8 @@
 
 #include "bms_state_machine.h"
 #include "bms_can.h"
+#include "SOC.h"
+#include "bms_fault.h"
 #include "stdio.h"   // for printf()
 
 /* USER CODE BEGIN Private defines */
@@ -82,6 +84,7 @@ void BMS_Update(bms_ctx_t *ctx)
             BMS_HandleFault(ctx, "Auto-addressing failed");
         break;
 
+
     /* --------------------------------------------------------------
      * STATE: MEASURE
      * --------------------------------------------------------------
@@ -89,18 +92,24 @@ void BMS_Update(bms_ctx_t *ctx)
      * On success, transition to IDLE state. On failure, fault.
      */
     case BMS_MEASURE:
-#if BMS_DEBUG
+    #if BMS_DEBUG
         printf("STATE: BMS_MEASURE\r\n");
-#endif
+    #endif
         status = stackVoltageRead(ACTIVECHANNELS);
+
         if (status == HAL_OK)
         {
-            uint16_t avgVoltage = 0;  // ← we’ll compute this next
-            uint8_t soc = 0;          // ← from getBatterySOC()
+            FaultCode_t fault;
+            if (BMS_CheckForFaults(&fault)) {
+                BMS_TriggerFault(fault);
+                BMS_HandleFault(ctx, "Measurement fault detected");
+                break;
+            }
 
-            // Send CAN status message (pack voltage + SOC)
+            // Continue as normal if no fault detected
+            uint16_t avgVoltage = 3700 * 56; // placeholder
+            uint8_t soc = getBatterySOC(avgVoltage / 56);
             BMS_CAN_SendStatus(avgVoltage, soc);
-
             BMS_GotoState(ctx, BMS_IDLE);
         }
         else
@@ -109,36 +118,42 @@ void BMS_Update(bms_ctx_t *ctx)
         }
         break;
 
-
-    /* --------------------------------------------------------------
-     * STATE: IDLE
-     * --------------------------------------------------------------
-     * Idle period between measurement or balancing cycles.
-     * Polls fault line and performs periodic tasks.
-     */
-    case BMS_IDLE:
+/* --------------------------------------------------------------
+ * STATE: IDLE
+ * --------------------------------------------------------------
+ * The system waits in this state between measurement or balancing cycles.
+ * During this time, it monitors for faults and may periodically
+ * perform CAN updates or transition back to MEASURE after a delay.
+ */
+	case BMS_IDLE:
 #if BMS_DEBUG
-        printf("STATE: BMS_IDLE\r\n");
+	printf("STATE: BMS_IDLE\r\n");
 #endif
-        // Check for hardware fault pin
-        if (HAL_GPIO_ReadPin(BQ_NFAULT_GPIO_Port, BQ_NFAULT_Pin) == GPIO_PIN_RESET)
-        {
-            BMS_HandleFault(ctx, "Fault pin asserted");
-            break;
-        }
+{
+	FaultCode_t fault;
+	// Check for any runtime faults during idle
+		if (BMS_CheckForFaults(&fault)) {
+		BMS_TriggerFault(fault);
+		BMS_HandleFault(ctx, "Idle fault detected");
+		break;
+	}
 
-        // Example: Every 1 second, take a new measurement
-        if (HAL_GetTick() - ctx->lastTransition > 1000)
-        {
-            BMS_GotoState(ctx, BMS_MEASURE);
-            break;
-        }
+	// send periodic CAN keepalive
+		static uint32_t lastCanSend = 0;
+		if (HAL_GetTick() - lastCanSend > 2000) { // every 2 seconds
+		BMS_CAN_SendStatus(0, 0); // TODO: replace with actual pack voltage/SOC vars
+		lastCanSend = HAL_GetTick();
+	}
 
-        // Example: placeholder for a balancing trigger condition
-        // if (shouldBalance)
-        //     BMS_GotoState(ctx, BMS_BALANCE);
+	// After 1 second, transition back to measurement
+		if (HAL_GetTick() - ctx->lastTransition > 1000) {
+		BMS_GotoState(ctx, BMS_MEASURE);
+		break;
+	}
 
-        break;
+	// Stay in idle otherwise
+		break;
+}
 
     /* --------------------------------------------------------------
      * STATE: FAULT
